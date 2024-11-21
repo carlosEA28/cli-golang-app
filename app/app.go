@@ -27,6 +27,17 @@ func Gerar() *cli.App {
 			},
 			Action: BuscarIps,
 		},
+		{
+			Name:  "servidores",
+			Usage: "Buscar o nome do servidor na internet",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "host",
+					Value: "devbook.com.br",
+				},
+			},
+			Action: BuscarServidores,
+		},
 	}
 
 	return app
@@ -44,4 +55,20 @@ func BuscarIps(c *cli.Context) {
 	for _, ip := range ips {
 		fmt.Println(ip)
 	}
+
+}
+func BuscarServidores(c *cli.Context) {
+	host := c.String("host")
+
+	servidores, erro := net.LookupNS(host)
+
+	if erro != nil {
+		log.Fatal(erro)
+	}
+
+	for _, servers := range servidores {
+		fmt.Println(servers.Host)
+
+	}
+
 }
